@@ -8,6 +8,11 @@ export ordDataDir=$2
 export bitcoinCookie="$bitcoinDataDir/.cookie"
 export ordWalletName="ord"
 
+export bitcoinDataDir="/var/lib/bitcoind"
+export bitcoinCookie="$bitcoinDataDir/.cookie"
+export ordDataDir="/var/lib/ord"
+export ordWalletName="ord"
+
 echo "bitcoinDataDir: $bitcoinDataDir"
 echo "bitcoinCookie: $bitcoinCookie"
 echo "ordDataDir: $ordDataDir"
