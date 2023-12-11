@@ -36,6 +36,8 @@ deploy-signet branch="master": (deploy branch "signet" "signet.ordinals.net")
 
 deploy-testnet branch="master": (deploy branch "test" "testnet.ordinals.net")
 
+deploy-testnet branch="master": (deploy branch "signet" "signet.ordinals.net")
+
 deploy-ord-dev branch="master" chain="main" domain="ordinals-dev.com": (deploy branch chain domain)
 
 save-ord-dev-state domain="ordinals-dev.com":
@@ -47,17 +49,17 @@ log unit="ord" domain="ordinals.net":
   ssh root@{{domain}} 'journalctl -fu {{unit}}'
 
 test-deploy:
-  ssh-keygen -f ~/.ssh/known_hosts -R 192.168.56.4
+  ssh-keygen -f ~/.ssh/known_hosts -R 192.168.1.106
   vagrant up
-  ssh-keyscan 192.168.56.4 >> ~/.ssh/known_hosts
+  ssh-keyscan 192.168.1.106 >> ~/.ssh/known_hosts
   rsync -avz \
     --delete \
     --exclude .git \
     --exclude target \
     --exclude .vagrant \
     --exclude index.redb \
-    . root@192.168.56.4:ord
-  ssh root@192.168.56.4 'cd ord && ./deploy/setup'
+    . root@192.168.1.106:ord
+  ssh root@192.168.1.106 'cd ord && ./deploy/setup'
 
 time-tests:
   cargo +nightly test -- -Z unstable-options --report-time

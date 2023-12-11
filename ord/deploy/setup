@@ -29,40 +29,40 @@ printf 'BRANCH=%s\n' $BRANCH >> /etc/environment \
 
 hostnamectl set-hostname $DOMAIN
 
-apt-get install --yes \
-  acl \
-  clang \
-  libsqlite3-dev\
-  libssl-dev \
-  pkg-config \
-  ufw \
-  vim
+# apt-get install --yes \
+#   acl \
+#   clang \
+#   libsqlite3-dev\
+#   libssl-dev \
+#   pkg-config \
+#   ufw \
+#   vim
 
-ufw default allow outgoing
-ufw default deny incoming
+# ufw default allow outgoing
+# ufw default deny incoming
 
-ufw allow 8080
-ufw allow http
-ufw allow https
-ufw allow ssh
+# ufw allow 8080
+# ufw allow http
+# ufw allow https
+# ufw allow ssh
 
-case $CHAIN in
-  main)
-    ufw allow 8333
-    ;;
-  signet)
-    ufw allow 38333
-    ;;
-  test)
-    ufw allow 18333
-    ;;
-  *)
-    echo "Unknown chain: $CHAIN"
-    exit 1
-    ;;
-esac
+# case $CHAIN in
+#   main)
+#     ufw allow 8333
+#     ;;
+#   signet)
+#     ufw allow 38333
+#     ;;
+#   test)
+#     ufw allow 18333
+#     ;;
+#   *)
+#     echo "Unknown chain: $CHAIN"
+#     exit 1
+#     ;;
+# esac
 
-ufw --force enable
+# ufw --force enable
 
 if ! which bitcoind; then
   ./bin/install-bitcoin-core-linux
@@ -101,6 +101,9 @@ case $CHAIN in
   signet)
     COOKIE_FILE_DIR=/var/lib/bitcoind/signet
     ;;
+  regtest)
+    COOKIE_FILE_DIR=/var/lib/bitcoind/regtest
+    ;;
   test)
     COOKIE_FILE_DIR=/var/lib/bitcoind/testnet3
     ;;
@@ -119,6 +122,8 @@ setfacl -m ord:x /var/lib/bitcoind
 setfacl -m ord:x $COOKIE_FILE_DIR
 setfacl -dm ord:r $COOKIE_FILE_DIR
 setfacl -m ord:r $COOKIE_FILE_DIR/.cookie
+setfacl -dm ord:rwx /var/lib/ord/$CHAIN
+setfacl -R -m ord:rwx /var/lib/ord/$CHAIN
 
 journalctl --unit ord --vacuum-time 1s
 
