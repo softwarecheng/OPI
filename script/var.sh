@@ -1,11 +1,11 @@
 #!/bin/bash
-# source "/Users/chenwenjie/test/ordinual/ordinals-indexer"
-# source "/root/deploy/OPI"
+# source ./var.sh "/Users/chenwenjie/test/ordinual/ordinals-indexer/bitcoind/data" \
+# "/Users/chenwenjie/test/ordinual/ordinals-indexer/ord/data"
+# source ./var.sh "/var/lib/bitcoind/regtest" "/var/lib/ord/regtest"
 
-export opihome=$1
-export bitcoinDataDir="$opihome/bitcoind/data"
-export bitcoinCookie="$opihome/bitcoind/data/regtest/.cookie"
-export ordDataDir="$opihome/ord/data"
+export bitcoinDataDir=$1
+export ordDataDir=$2
+export bitcoinCookie="$bitcoinDataDir/.cookie"
 export ordWalletName="ord"
 
 echo "bitcoinDataDir: $bitcoinDataDir"
